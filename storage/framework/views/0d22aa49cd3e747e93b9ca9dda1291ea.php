@@ -1,0 +1,1 @@
+<h1>Liste des langues</h1><?php /**PATH C:\laravel-projects\culture\resources\views//langues/index.blade.php ENDPATH**/ ?>

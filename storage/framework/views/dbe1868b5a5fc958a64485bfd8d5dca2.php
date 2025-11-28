@@ -1,0 +1,1 @@
+<?php /**PATH C:\laravel-projects\culture\resources\views//langues/langues.blade.php ENDPATH**/ ?>

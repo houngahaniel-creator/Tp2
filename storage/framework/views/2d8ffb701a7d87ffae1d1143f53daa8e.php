@@ -1,0 +1,1 @@
+Affichage de la langue <?php echo e($id); ?><?php /**PATH C:\laravel-projects\culture\resources\views//langues/show.blade.php ENDPATH**/ ?>

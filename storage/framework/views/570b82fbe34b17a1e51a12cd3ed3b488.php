@@ -1,0 +1,1 @@
+Hello World<?php /**PATH C:\laravel-projects\culture\resources\views/about.blade.php ENDPATH**/ ?>
