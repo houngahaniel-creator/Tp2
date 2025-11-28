@@ -17,16 +17,18 @@ RUN composer install --no-dev --optimize-autoloader
 # Installer Node.js et builder Tailwind/Vite
 RUN npm install && npm run build
 
-# Générer APP_KEY si absent et exécuter migrations/seeds
+# Générer APP_KEY si absent
 RUN php artisan key:generate || true
+
+# Exécuter migrations et seeds si la DB est accessible
 RUN php artisan migrate --force || true
 RUN php artisan db:seed --force || true
 
-# Permissions
+# Permissions Laravel
 RUN chown -R www-data:www-data storage bootstrap/cache
 RUN chmod -R 775 storage bootstrap/cache
 
-# Copier config Nginx
+# Copier configuration Nginx
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
