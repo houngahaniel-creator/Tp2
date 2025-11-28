@@ -13,6 +13,8 @@ COPY . .
 # Installer Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
+RUN chmod +x /var/www/html/entrypoint.sh
+
 
 # Installer Node.js et builder Tailwind/Vite
 RUN npm install && npx vite build
