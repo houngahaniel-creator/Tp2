@@ -1,24 +1,37 @@
 FROM php:8.2-fpm
 
-WORKDIR /var/www/html
-
+# Installer dépendances PHP
 RUN apt-get update && apt-get install -y \
-    git curl libpng-dev libonig-dev libxml2-dev zip unzip libzip-dev \
+    nginx \
+    git \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip unzip \
+    libzip-dev \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip \
     && rm -rf /var/lib/apt/lists/*
 
-# Installer Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+WORKDIR /var/www/html
 
-# Copier le code de l'application
+# Copier le code
 COPY . .
 
-# Installer les dépendances Laravel
+# Installer Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
 
-# Permissions nécessaires pour Laravel
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# Permissions Laravel
+RUN chown -R www-data:www-data storage bootstrap/cache
 
-EXPOSE 9000
+# Copier config Nginx
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
-CMD ["php-fpm"]
+# Supprimer default site
+RUN rm -f /etc/nginx/sites-enabled/default || true
+
+# Nginx doit écouter en 0.0.0.0
+EXPOSE 80
+
+CMD sh -c "php-fpm -D && nginx -g 'daemon off;'"
