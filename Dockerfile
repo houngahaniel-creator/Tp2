@@ -15,7 +15,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
 
 # Installer Node.js et builder Tailwind/Vite
-RUN npm install && npm run build
+RUN npm install && npx vite build
 
 # Générer APP_KEY si absent
 RUN php artisan key:generate || true
