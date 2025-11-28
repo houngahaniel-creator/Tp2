@@ -9,7 +9,6 @@ services:
     volumes:
       - .:/var/www/html
     environment:
-      # variables DB définies via .env ou via host/env du serveur
       DB_HOST: db
       DB_PORT: 3306
       DB_DATABASE: ${DB_DATABASE}
@@ -29,19 +28,8 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
     volumes:
       - dbdata:/var/lib/mysql
-    ports:
-      - "3306:3306"
 
-  nginx:
-    image: nginx:alpine
-    container_name: nginx
-    ports:
-      - "80:80"
-    volumes:
-      - .:/var/www/html
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
-    depends_on:
-      - app
-
+  # On garde juste "app" + "db", Nginx est intégré dans l'image "app"
+  
 volumes:
   dbdata:
